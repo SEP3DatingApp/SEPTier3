@@ -12,7 +12,7 @@ namespace WebApp.Models
        
 
         public User User { get; set; }
-        public int userId { get; set; }
-        public int matchId { get; set; }
+        public int UserId { get; set; }
+        public int MatchId { get; set; }
     }
 }

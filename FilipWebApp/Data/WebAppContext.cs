@@ -20,6 +20,6 @@ namespace WebApp.Data
         public DbSet<Match> Matches { get; set; }
 
         public DbSet<Reject> Rejects { get; set; }
-        public DbSet<Fisher> fishers { get; set; }
+        public DbSet<Fisher> Fishers { get; set; }
     }
 }

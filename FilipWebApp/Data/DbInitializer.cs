@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
 using WebApp.Models;
 
-namespace FilipWebApp.Data
+namespace WebApp.Data
 { 
     public class DbInitializer
     {
@@ -28,7 +28,7 @@ namespace FilipWebApp.Data
             {
                 new Fisher()
                 {
-                    userType = "Fisher", username = "bybis",password = "dalius", email = "bybis@fsf.com", gender = 'M',sexPref = 'F',picRef = "rasr2",age = 12,isActive = true
+                    Username = "bybis",Password = "ffsss", Email = "bybis@fsf.com", Gender = 'M',SexPref = 'F',PicRef = "rasr2",Age = 12,IsActive = true
                 },
             };
 

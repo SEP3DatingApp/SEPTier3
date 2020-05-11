@@ -12,12 +12,9 @@ namespace FilipWebApp.Models
     public class User
     {
         public int UserId { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        [Required]
-        public string  userType{ get; set; }
-
-        public ICollection<Match> matches { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public ICollection<Match> Matches { get; set; }
 
     }
 }

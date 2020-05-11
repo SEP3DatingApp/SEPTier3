@@ -8,14 +8,14 @@ namespace WebApp.Models
 {
     public class Fisher: User
     {
-        public string email { get; set; }
-        public char gender { get; set; }
-        public char sexPref { get; set; }
-        public string picRef { get; set; }
-        public int age { get; set; }
-        public bool isActive { get; set; }
-        public string name{ get; set; }
-        public string description { get; set; }
+        public string Email { get; set; }
+        public char Gender { get; set; }
+        public char SexPref { get; set; }
+        public string PicRef { get; set; }
+        public int Age { get; set; }
+        public bool IsActive { get; set; }
+        public string Name{ get; set; }
+        public string Description { get; set; }
 
     }
 }
