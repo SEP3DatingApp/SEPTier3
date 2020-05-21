@@ -66,26 +66,26 @@ namespace Sep3Tier3WithAuth.Controllers
         }
 
 
-        //// Just for fun, letting to add admins :)
-        //[AllowAnonymous]
-        //[HttpPost("registeradmin")]
-        //public IActionResult Register([FromBody] AddAdminModel model)
-        //{
-        //    // Map model to entity
-        //    var admin = _mapper.Map<Administrator>(model);
+        // Just for fun, letting to add admins :)
+        [Authorize(Roles = Roles.admin)]
+        [HttpPost("registeradmin")]
+        public IActionResult Register([FromBody] AddAdminModel model)
+        {
+            // Map model to entity
+            var admin = _mapper.Map<Administrator>(model);
 
-        //    try
-        //    {
-        //        //create user
-        //        _userService.Create(admin, model.Password);
-        //        return Ok();
-        //    }
-        //    catch (AppException ex)
-        //    {
-        //        // return error if something went wrong with the registration
-        //        return BadRequest(new { message = ex.Message });
-        //    }
-        //}
+            try
+            {
+                //create user
+                _userService.CreateAdmin(admin, model.Password);
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                // return error if something went wrong with the registration
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
 
         [AllowAnonymous]
@@ -110,18 +110,27 @@ namespace Sep3Tier3WithAuth.Controllers
 
         [Authorize(Roles = Roles.admin)]
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAllFishers()
         {
-            var users = _userService.GetAll();
-            var model = _mapper.Map<IList<UserModel>>(users);
+            var fishers = _userService.GetAll();
+            var model = _mapper.Map<IList<FisherModel>>(fishers);
             return Ok(model);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetByID(int id)
         {
+            FisherModel model;
             var user = _userService.GetById(id);
-            var model = _mapper.Map<UserModel>(user);
+            try
+            {
+                model = _mapper.Map<FisherModel>(user);
+            }
+            catch (AutoMapperMappingException e)
+            {
+                return BadRequest(new { message = "User does not exists in our database or it is not a fisher" });
+            }
+
             return Ok(model);
         }
 
@@ -131,7 +140,6 @@ namespace Sep3Tier3WithAuth.Controllers
             // map model to entity and set id
             var fisher = _mapper.Map<Fisher>(model);
             fisher.Id = id;
-
             try
             {
                 //Update user

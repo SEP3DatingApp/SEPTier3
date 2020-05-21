@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sep3Tier3WithAuth.Entities;
 using Sep3Tier3WithAuth.Helpers;
+using Sep3Tier3WithAuth.Models;
 
 namespace Sep3Tier3WithAuth.Services
 {
@@ -32,9 +33,9 @@ namespace Sep3Tier3WithAuth.Services
             return user;
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<Fisher> GetAll()
         {
-            return _context.Users;
+            return _context.Fishers;
         }
 
         public User GetById(int id)
@@ -42,24 +43,44 @@ namespace Sep3Tier3WithAuth.Services
             return _context.Users.Find(id);
         }
 
-        public User Create(User user, string password)
+        public Fisher Create(Fisher fisher, string password)
         {
             //Validation
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required!");
 
-            if(_context.Users.Any(x => x.Username == user.Username))
-                throw new AppException("Username \"" + user.Username + "\" is already taken!");
+            if(_context.Fishers.Any(x => x.Username == fisher.Username))
+                throw new AppException("Username \"" + fisher.Username + "\" is already taken!");
 
             CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            fisher.PasswordHash = passwordHash;
+            fisher.PasswordSalt = passwordSalt;
 
-            _context.Users.Add(user);
+            _context.Fishers.Add(fisher);
             _context.SaveChanges();
 
-            return user;
+            return fisher;
+        }
+
+        public Administrator CreateAdmin(Administrator admin, string password)
+        {
+            //Validation
+            if (string.IsNullOrWhiteSpace(password))
+                throw new AppException("Password is required!");
+
+            if (_context.Administrators.Any(x => x.Username == admin.Username))
+                throw new AppException("Username \"" + admin.Username + "\" is already taken!");
+
+            CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
+
+            admin.PasswordHash = passwordHash;
+            admin.PasswordSalt = passwordSalt;
+
+            _context.Administrators.Add(admin);
+            _context.SaveChanges();
+
+            return admin;
         }
 
         public void Update(Fisher userParam, string password = null)
@@ -82,11 +103,11 @@ namespace Sep3Tier3WithAuth.Services
             }
 
             // update user properties if provided
-            if (!string.IsNullOrWhiteSpace(userParam.FirstName))
-                fisher.FirstName = userParam.FirstName;
+            if (!string.IsNullOrWhiteSpace(userParam.SexPref))
+                fisher.SexPref = userParam.SexPref;
 
-            if (!string.IsNullOrWhiteSpace(userParam.Surname))
-                fisher.Surname = userParam.Surname;
+            if (!string.IsNullOrWhiteSpace(userParam.PicRef))
+                fisher.PicRef = userParam.PicRef;
 
             // update password if provided
             if (!string.IsNullOrWhiteSpace(password))
@@ -114,7 +135,7 @@ namespace Sep3Tier3WithAuth.Services
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             if (password == null)
-                throw new ArgumentNullException("password is empty");
+                throw new ArgumentNullException("Password is empty");
             if (string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
 

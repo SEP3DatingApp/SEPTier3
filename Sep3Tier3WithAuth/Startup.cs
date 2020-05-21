@@ -83,7 +83,7 @@ namespace Sep3Tier3WithAuth
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AuthContext authContext)
-        {
+        { 
             authContext.Database.Migrate();
 
             if (env.IsDevelopment())
