@@ -93,12 +93,12 @@ namespace Sep3Tier3WithAuth.Controllers
         public IActionResult Register([FromBody] RegisterModel model)
         {
             // Map model to entity
-            var fisher = _mapper.Map<Fisher>(model);
+            var user = _mapper.Map<User>(model);
 
             try
             {
                 //create user
-                _userService.Create(fisher, model.Password);
+                _userService.Create(user, model.Password);
                 return Ok();
             }
             catch (AppException ex)

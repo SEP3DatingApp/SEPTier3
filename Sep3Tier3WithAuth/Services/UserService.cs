@@ -43,24 +43,24 @@ namespace Sep3Tier3WithAuth.Services
             return _context.Users.Find(id);
         }
 
-        public Fisher Create(Fisher fisher, string password)
+        public User Create(User user, string password)
         {
             //Validation
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required!");
 
-            if(_context.Fishers.Any(x => x.Username == fisher.Username))
-                throw new AppException("Username \"" + fisher.Username + "\" is already taken!");
+            if(_context.Users.Any(x => x.Username == user.Username) || _context.Administrators.Any(x => x.Username == user.Username))
+                throw new AppException("Username \"" + user.Username + "\" is already taken!");
 
             CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
 
-            fisher.PasswordHash = passwordHash;
-            fisher.PasswordSalt = passwordSalt;
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
 
-            _context.Fishers.Add(fisher);
+            _context.Users.Add(user);
             _context.SaveChanges();
 
-            return fisher;
+            return user;
         }
 
         public Administrator CreateAdmin(Administrator admin, string password)
@@ -69,7 +69,7 @@ namespace Sep3Tier3WithAuth.Services
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required!");
 
-            if (_context.Administrators.Any(x => x.Username == admin.Username))
+            if (_context.Administrators.Any(x => x.Username == admin.Username) || _context.Fishers.Any(x => x.Username == admin.Username))
                 throw new AppException("Username \"" + admin.Username + "\" is already taken!");
 
             CreatePasswordHash(password, out var passwordHash, out var passwordSalt);

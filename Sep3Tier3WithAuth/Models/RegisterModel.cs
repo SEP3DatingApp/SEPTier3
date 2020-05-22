@@ -28,7 +28,7 @@ namespace Sep3Tier3WithAuth.Models
         [Required]
         [StringLength(1, MinimumLength = 1, ErrorMessage = "The SexPref must be 1 characters.")]
         [RegularExpression("M|F|B", ErrorMessage = "The SexPref must be either 'M','F' or 'B'(For both) only.")]
-        public char SexPref { get; set; }
+        public string SexPref { get; set; }
         [Required]
         public int Age { get; set; }
 
