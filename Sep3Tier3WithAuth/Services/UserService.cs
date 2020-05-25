@@ -90,17 +90,21 @@ namespace Sep3Tier3WithAuth.Services
             if (fisher == null)
                 throw new AppException("User not found.");
 
-            // update username if it has been changed
-            if (!string.IsNullOrWhiteSpace(userParam.Username) && userParam.Username != fisher.Username)
-            {
-                // throw an error if username is already taken
-                if (_context.Users.Any(x => x.Username == userParam.Username))
-                {
-                    throw new AppException("Username: " + userParam.Username + " is already taken.");
-                }
+            //// update username if it has been changed
+            //if (!string.IsNullOrWhiteSpace(userParam.Username) && userParam.Username != fisher.Username)
+            //{
+            //    // throw an error if username is already taken
+            //    if (_context.Users.Any(x => x.Username == userParam.Username))
+            //    {
+            //        throw new AppException("Username: " + userParam.Username + " is already taken.");
+            //    }
 
-                fisher.Username = userParam.Username;
-            }
+            //    fisher.Username = userParam.Username;
+            //}
+
+            // update user properties if provided
+            if (!string.IsNullOrWhiteSpace(userParam.Description))
+                fisher.Description = userParam.Description;
 
             // update user properties if provided
             if (!string.IsNullOrWhiteSpace(userParam.SexPref))
