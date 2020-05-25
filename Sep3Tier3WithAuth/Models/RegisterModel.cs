@@ -13,7 +13,7 @@ namespace Sep3Tier3WithAuth.Models
         [Required]
         [StringLength(50,ErrorMessage = "Max characters for firstname are 50")]
         public string FirstName { get; set; }
-        [Required]
+
         [StringLength(50, ErrorMessage = "Max characters for surname are 50")]
         public string Surname { get; set; }
         [Display(Name = "Email address")]
