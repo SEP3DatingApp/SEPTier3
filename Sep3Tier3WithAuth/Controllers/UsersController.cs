@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.EntityFrameworkCore.Migrations;
+
 
 namespace Sep3Tier3WithAuth.Controllers
 {
@@ -45,7 +45,7 @@ namespace Sep3Tier3WithAuth.Controllers
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
                     new Claim(ClaimTypes.Role, user.Discriminator)
@@ -68,8 +68,8 @@ namespace Sep3Tier3WithAuth.Controllers
 
 
         // Just for fun, letting to add admins :)
-        [Authorize(Roles = Roles.admin)]
-        [HttpPost("registeradmin")]
+        [Authorize(Roles = Roles.Admin)]
+        [HttpPost("RegisterAdmin")]
         public IActionResult Register([FromBody] AddAdminModel model)
         {
             // Map model to entity
@@ -109,7 +109,7 @@ namespace Sep3Tier3WithAuth.Controllers
             }
         }
 
-        [Authorize(Roles = Roles.admin)]
+        [Authorize(Roles = Roles.Admin)]
         [HttpGet]
         public IActionResult GetAllFishers()
         {
@@ -117,10 +117,18 @@ namespace Sep3Tier3WithAuth.Controllers
             var model = _mapper.Map<IList<FisherModel>>(fishers);
             return Ok(model);
         }
+        [Authorize(Roles = Roles.Fisher)]
+        [HttpGet("GetFishersPref/{SexPref}")]
+        public IActionResult GetAllFishersAccordingToTheirPref(string sexPref)
+        {
+            var fishers = _userService.GetAllFishersAccordingToTheirPref(sexPref);
+            var model = _mapper.Map<IList<FisherInfoForMatches>>(fishers);
+            return Ok(model);
+        }
 
-        [Authorize(Roles = Roles.fisher)]
-        [HttpGet("getuser/{id}")]
-        public IActionResult GetByID(int id)
+        [Authorize(Roles = Roles.Fisher)]
+        [HttpGet("GetUser/{id}")]
+        public IActionResult GetById(int id)
         {
             FisherModel model;
             var fisher = _userService.GetById(id);
@@ -128,7 +136,7 @@ namespace Sep3Tier3WithAuth.Controllers
             {
                 model = _mapper.Map<FisherModel>(fisher);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return BadRequest(new { message = "User does not exists in our database or it is not a fisher" });
             }
@@ -136,7 +144,7 @@ namespace Sep3Tier3WithAuth.Controllers
             return Ok(model);
         }
 
-        [Authorize(Roles = Roles.fisher)]
+        [Authorize(Roles = Roles.Fisher)]
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] UpdateModel model)
         {
@@ -154,7 +162,7 @@ namespace Sep3Tier3WithAuth.Controllers
                 return BadRequest(new {message = ex.Message});
             }
         }
-        [Authorize(Roles = Roles.admin)]
+        [Authorize(Roles = Roles.Admin)]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

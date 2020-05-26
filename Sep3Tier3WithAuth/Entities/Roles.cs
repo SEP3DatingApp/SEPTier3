@@ -4,7 +4,7 @@ namespace Sep3Tier3WithAuth.Entities
 {
     public class Roles
     {
-        public const String admin = "Administrator";
-        public const String fisher = "Fisher";
+        public const String Admin = "Administrator";
+        public const String Fisher = "Fisher";
     }
 }

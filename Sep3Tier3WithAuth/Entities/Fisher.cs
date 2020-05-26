@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Sep3Tier3WithAuth.Entities
+﻿namespace Sep3Tier3WithAuth.Entities
 {
     public class Fisher : User
     {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Sep3Tier3WithAuth.Entities;
 using Sep3Tier3WithAuth.Helpers;
-using Sep3Tier3WithAuth.Models;
 
 namespace Sep3Tier3WithAuth.Services
 {
@@ -41,6 +39,20 @@ namespace Sep3Tier3WithAuth.Services
         public Fisher GetById(int id)
         {
             return _context.Fishers.Find(id);
+        }
+
+        public IEnumerable<Fisher> GetAllFishersAccordingToTheirPref(string sexPref)
+        {
+            if(!sexPref.Equals("B"))
+            { 
+                var fishers = from fisher in _context.Fishers
+                        .Where(b => b.Gender == sexPref)
+                              select fisher;
+                return fishers;
+            }
+            var biFishers = from fisher in _context.Fishers
+                select fisher;
+            return biFishers;
         }
 
         public User Create(User user, string password)
@@ -146,9 +158,9 @@ namespace Sep3Tier3WithAuth.Services
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             if (password == null)
-                throw new ArgumentNullException("Password is empty");
+                throw new AppException("Password is empty");
             if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+                throw new AppException("Value cannot be empty or whitespace only string.", "password");
 
             using var hmac = new System.Security.Cryptography.HMACSHA512();
             passwordSalt = hmac.Key;
@@ -157,13 +169,13 @@ namespace Sep3Tier3WithAuth.Services
 
         private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {
-            if (password == null) throw new ArgumentNullException("password");
+            if (password == null) throw new AppException("password");
             if (string.IsNullOrWhiteSpace(password)) 
-                throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+                throw new AppException("Value cannot be empty or whitespace only string.", "password");
             if (storedHash.Length != 64) 
-                throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
+                throw new AppException("Invalid length of password hash (64 bytes expected).", "passwordHash");
             if (storedSalt.Length != 128) 
-                throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+                throw new AppException("Invalid length of password salt (128 bytes expected).", "passwordHash");
 
             using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
             { 
