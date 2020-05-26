@@ -38,9 +38,9 @@ namespace Sep3Tier3WithAuth.Services
             return _context.Fishers;
         }
 
-        public User GetById(int id)
+        public Fisher GetById(int id)
         {
-            return _context.Users.Find(id);
+            return _context.Fishers.Find(id);
         }
 
         public User Create(User user, string password)

@@ -121,7 +121,7 @@ namespace Sep3Tier3WithAuth.Controllers
         public IActionResult GetByID(int id)
         {
             FisherModel model;
-            var user = _userService.GetById(id);
+            var fisher = _userService.GetById(id);
             try
             {
                 model = _mapper.Map<FisherModel>(user);
