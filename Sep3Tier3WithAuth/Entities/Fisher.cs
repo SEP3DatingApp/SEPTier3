@@ -12,7 +12,6 @@ namespace Sep3Tier3WithAuth.Entities
         public string PicRef { get; set; }
         public int Age { get; set; }
         public string Description { get; set; }
-        [DefaultValue(true)]
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }
