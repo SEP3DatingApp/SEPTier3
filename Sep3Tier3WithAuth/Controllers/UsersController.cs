@@ -136,6 +136,7 @@ namespace Sep3Tier3WithAuth.Controllers
             return Ok(model);
         }
 
+        [Authorize(Roles = Roles.fisher)]
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] UpdateModel model)
         {
@@ -153,7 +154,7 @@ namespace Sep3Tier3WithAuth.Controllers
                 return BadRequest(new {message = ex.Message});
             }
         }
-
+        [Authorize(Roles = Roles.admin)]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
