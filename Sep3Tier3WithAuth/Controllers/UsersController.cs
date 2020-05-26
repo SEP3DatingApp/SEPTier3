@@ -128,7 +128,7 @@ namespace Sep3Tier3WithAuth.Controllers
             {
                 model = _mapper.Map<FisherModel>(fisher);
             }
-            catch (AutoMapperMappingException e)
+            catch (Exception e)
             {
                 return BadRequest(new { message = "User does not exists in our database or it is not a fisher" });
             }

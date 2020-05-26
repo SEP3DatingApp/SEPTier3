@@ -103,6 +103,10 @@ namespace Sep3Tier3WithAuth.Services
             //}
 
             // update user properties if provided
+            if (!string.IsNullOrWhiteSpace(userParam.Email))
+                fisher.Email = userParam.Email;
+
+            // update user properties if provided
             if (!string.IsNullOrWhiteSpace(userParam.Description))
                 fisher.Description = userParam.Description;
 
@@ -112,6 +116,9 @@ namespace Sep3Tier3WithAuth.Services
 
             if (!string.IsNullOrWhiteSpace(userParam.PicRef))
                 fisher.PicRef = userParam.PicRef;
+
+            if(userParam.IsActive != fisher.IsActive)
+                fisher.IsActive = userParam.IsActive;
 
             // update password if provided
             if (!string.IsNullOrWhiteSpace(password))

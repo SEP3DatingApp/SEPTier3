@@ -22,14 +22,15 @@ namespace Sep3Tier3WithAuth.Models
         public string Email { get; set; }
         [Required]
         [StringLength(1, MinimumLength = 1, ErrorMessage = "The Gender must be 1 characters.")]
-        [RegularExpression("M|F", ErrorMessage = "The Gender must be either 'M' or 'F' only.")]
+        [RegularExpression("M|F", ErrorMessage = "The Gender must be either 'M','F' or 'B' only.")]
         public string Gender { get; set; }
 
         [Required]
         [StringLength(1, MinimumLength = 1, ErrorMessage = "The SexPref must be 1 characters.")]
         [RegularExpression("M|F|B", ErrorMessage = "The SexPref must be either 'M','F' or 'B'(For both) only.")]
         public string SexPref { get; set; }
-        //[Required]
+        [Required]
+        [Range(18, 99, ErrorMessage = "Please enter a valid age")]
         public int Age { get; set; }
 
         [StringLength(250, ErrorMessage = "Max characters for description are 250")]
