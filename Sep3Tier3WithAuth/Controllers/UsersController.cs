@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Sep3Tier3WithAuth.Controllers
 {
@@ -93,12 +94,12 @@ namespace Sep3Tier3WithAuth.Controllers
         public IActionResult Register([FromBody] RegisterModel model)
         {
             // Map model to entity
-            var user = _mapper.Map<User>(model);
+            var fisher = _mapper.Map<Fisher>(model);
 
             try
             {
                 //create user
-                _userService.Create(user, model.Password);
+                _userService.Create(fisher, model.Password);
                 return Ok();
             }
             catch (AppException ex)
@@ -117,14 +118,15 @@ namespace Sep3Tier3WithAuth.Controllers
             return Ok(model);
         }
 
-        [HttpGet("{id}")]
+        [Authorize(Roles = Roles.fisher)]
+        [HttpGet("getuser/{id}")]
         public IActionResult GetByID(int id)
         {
             FisherModel model;
             var fisher = _userService.GetById(id);
             try
             {
-                model = _mapper.Map<FisherModel>(user);
+                model = _mapper.Map<FisherModel>(fisher);
             }
             catch (AutoMapperMappingException e)
             {
