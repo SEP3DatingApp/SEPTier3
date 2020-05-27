@@ -23,7 +23,7 @@ namespace Sep3Tier3WithAuth.Models
         public string Surname { get; set; }
         [Display(Name = "Email address")]
         [Required(ErrorMessage = "The email address is required")]
-        [RegularExpression(@"^[^\\/:*;\.\)\(]+$", ErrorMessage = "Email contains ':', '.' ';', '*', '/' or '\' which are not allowed!")]
+        [RegularExpression(@"^[^\\/:*;\)\(]+$", ErrorMessage = "Email contains ':', '.' ';', '*', '/' or '\' which are not allowed!")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
         [Required]
