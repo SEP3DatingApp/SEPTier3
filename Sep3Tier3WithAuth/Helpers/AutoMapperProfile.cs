@@ -9,9 +9,9 @@ namespace Sep3Tier3WithAuth.Helpers
         public AutoMapperProfile()
         {
             CreateMap<Fisher, FisherModel>();
-            CreateMap<Fisher, RegisterModel>();
-            CreateMap<Fisher, UpdateModel>();
-            CreateMap<Administrator,AddAdminModel>();
+            CreateMap<RegisterModel,Fisher>();
+            CreateMap<UpdateModel ,Fisher>();
+            CreateMap<AddAdminModel,Administrator>();
             CreateMap<Fisher, FisherInfoForMatches>();
         }
     }
