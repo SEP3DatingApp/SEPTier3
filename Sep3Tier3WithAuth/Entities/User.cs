@@ -1,7 +1,10 @@
-﻿namespace Sep3Tier3WithAuth.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Sep3Tier3WithAuth.Entities
 {
     public class User
     {
+        [Key]
         public int Id { get; set; }
         public string Username { get; set; }
         public byte[] PasswordHash { get; set; }

@@ -23,5 +23,7 @@ namespace Sep3Tier3WithAuth.Helpers
         public DbSet<Fisher> Fishers { get; set; }
 
         public DbSet<Administrator> Administrators { get; set; }
+
+        public DbSet<PersonSexuality> PersonSexualities { get; set; }
     }
 }

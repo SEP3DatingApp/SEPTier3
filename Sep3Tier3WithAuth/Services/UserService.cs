@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Sep3Tier3WithAuth.Entities;
 using Sep3Tier3WithAuth.Helpers;
@@ -40,19 +42,49 @@ namespace Sep3Tier3WithAuth.Services
         {
             return _context.Fishers.Find(id);
         }
-
-        public IEnumerable<Fisher> GetAllFishersAccordingToTheirPref(string sexPref)
+        public IEnumerable<Fisher> GetAllFishersAccordingToTheirPref(string gender,int sexPref)
         {
-            if(!sexPref.Equals("B"))
-            { 
-                var fishers = from fisher in _context.Fishers
-                        .Where(b => b.Gender == sexPref)
-                              select fisher;
-                return fishers;
+            IQueryable<Fisher> fishers = Enumerable.Empty<Fisher>().AsQueryable();
+            //Mans not hot
+            if(gender.Equals("M") && sexPref == 1)
+            {
+                fishers = from fisher in _context.Fishers
+                        .Where(b => (b.Gender == "F" && b.PersonSexualityId == 1) ||
+                                    (b.Gender == "F" && b.PersonSexualityId == 3) && b.IsActive)
+                    select fisher;
             }
-            var biFishers = from fisher in _context.Fishers
-                select fisher;
-            return biFishers;
+            else if (gender.Equals("M") && sexPref == 2)
+            {
+                fishers = from fisher in _context.Fishers
+                        .Where(b => (b.Gender == "M" && b.PersonSexualityId == 2) || (b.Gender == "M" && b.PersonSexualityId == 3) && b.IsActive)
+                    select fisher;
+            }
+            else if (gender.Equals("M") && sexPref == 3)
+            {
+                fishers = from fisher in _context.Fishers
+                        .Where(b => b.Gender == "M" && b.PersonSexualityId == 2 || b.Gender == "M" && b.PersonSexualityId == 3 || b.Gender == "F" && b.PersonSexualityId == 1 || b.Gender == "F" && b.PersonSexualityId == 3 && b.IsActive)
+                    select fisher;
+            }
+            // Females
+            else if (gender.Equals("F") && sexPref == 1)
+            {
+                fishers = from fisher in _context.Fishers
+                        .Where(b => (b.Gender == "M" && b.PersonSexualityId == 1) || (b.Gender == "M" && b.PersonSexualityId == 3) && b.IsActive)
+                    select fisher;
+            }
+            else if (gender.Equals("F") && sexPref == 2)
+            {
+                fishers = from fisher in _context.Fishers
+                        .Where(b => (b.Gender == "F" && b.PersonSexualityId == 2) || (b.Gender == "F" && b.PersonSexualityId == 3) && b.IsActive)
+                    select fisher;
+            }
+            else if (gender.Equals("F") && sexPref == 3)
+            {
+                fishers = from fisher in _context.Fishers
+                        .Where(b => (b.Gender == "M" && b.PersonSexualityId == 1) || (b.Gender == "M" && b.PersonSexualityId == 3) || (b.Gender == "F" && b.PersonSexualityId == 2) || (b.Gender == "F" && b.PersonSexualityId == 3) && b.IsActive)
+                    select fisher; 
+            }
+            return fishers;
         }
 
         public User Create(User user, string password)
@@ -123,8 +155,8 @@ namespace Sep3Tier3WithAuth.Services
                 fisher.Description = userParam.Description;
 
             // update user properties if provided
-            if (!string.IsNullOrWhiteSpace(userParam.SexPref))
-                fisher.SexPref = userParam.SexPref;
+            if (userParam.PersonSexualityId != fisher.PersonSexualityId)
+                fisher.PersonSexualityId = userParam.PersonSexualityId;
 
             if (!string.IsNullOrWhiteSpace(userParam.PicRef))
                 fisher.PicRef = userParam.PicRef;

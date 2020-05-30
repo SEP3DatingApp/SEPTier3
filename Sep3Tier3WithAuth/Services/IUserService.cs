@@ -6,7 +6,7 @@ namespace Sep3Tier3WithAuth.Services
     public interface IUserService
     {
         User Authenticate(string username, string password);
-        IEnumerable<Fisher> GetAllFishersAccordingToTheirPref(string SexPref);
+        IEnumerable<Fisher> GetAllFishersAccordingToTheirPref(string gender, int sexPref);
         IEnumerable<Fisher> GetAll();
         Fisher GetById(int id);
         User Create(User fisher, string password);

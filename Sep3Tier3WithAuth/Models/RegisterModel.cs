@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Sep3Tier3WithAuth.Models
 {
@@ -32,9 +33,8 @@ namespace Sep3Tier3WithAuth.Models
         public string Gender { get; set; }
 
         [Required]
-        [StringLength(1, MinimumLength = 1, ErrorMessage = "The SexPref must be 1 characters.")]
-        [RegularExpression("M|F|B", ErrorMessage = "The SexPref must be either 'M','F' or 'B'(For both) only.")]
-        public string SexPref { get; set; }
+        [Range(1, 6, ErrorMessage = "Value must be between 1 to 6")]
+        public int PersonSexualityId { get; set; }
         [Required]
         [Range(18, 99, ErrorMessage = "Please enter a valid age!")]
         public int Age { get; set; }

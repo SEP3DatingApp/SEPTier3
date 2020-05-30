@@ -70,7 +70,7 @@ namespace Sep3Tier3WithAuth.Controllers
         // Just for fun, letting to add admins :)
         [Authorize(Roles = Roles.Admin)]
         [HttpPost("RegisterAdmin")]
-        public IActionResult Register([FromBody] AddAdminModel model)
+        public IActionResult RegisterAdmin([FromBody] AddAdminModel model)
         {
             // Map model to entity
             var admin = _mapper.Map<Administrator>(model);
@@ -118,10 +118,10 @@ namespace Sep3Tier3WithAuth.Controllers
             return Ok(model);
         }
         [Authorize(Roles = Roles.Fisher)]
-        [HttpGet("GetFishersPref/{SexPref}")]
-        public IActionResult GetAllFishersAccordingToTheirPref(string sexPref)
+        [HttpGet("GetFishersPref/{gender};{sexPref}")]
+        public IActionResult GetAllFishersAccordingToTheirPref(string gender,int sexPref)
         {
-            var fishers = _userService.GetAllFishersAccordingToTheirPref(sexPref);
+            var fishers = _userService.GetAllFishersAccordingToTheirPref(gender,sexPref);
             var model = _mapper.Map<IList<FisherInfoForMatches>>(fishers);
             return Ok(model);
         }
