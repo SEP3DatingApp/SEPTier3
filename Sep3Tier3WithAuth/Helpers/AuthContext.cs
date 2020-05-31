@@ -25,5 +25,10 @@ namespace Sep3Tier3WithAuth.Helpers
         public DbSet<Administrator> Administrators { get; set; }
 
         public DbSet<PersonSexuality> PersonSexualities { get; set; }
+
+        public DbSet<Interactions> Interactions { get; set; }
+
+        public DbSet<LikeReject> LikeReject { get; set; }
+
     }
 }

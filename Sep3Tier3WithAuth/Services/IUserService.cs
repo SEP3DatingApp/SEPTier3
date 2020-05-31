@@ -9,6 +9,8 @@ namespace Sep3Tier3WithAuth.Services
         IEnumerable<Fisher> GetAllFishersAccordingToTheirPref(string gender, int sexPref);
         IEnumerable<Fisher> GetAll();
         Fisher GetById(int id);
+        void LikePerson(LikeReject lr);
+        void RejectPerson(LikeReject lr);
         User Create(User fisher, string password);
         Administrator CreateAdmin(Administrator admin, string password);
         void Update(Fisher user, string password = null);

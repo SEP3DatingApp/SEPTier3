@@ -13,6 +13,8 @@ namespace Sep3Tier3WithAuth.Helpers
             CreateMap<UpdateModel ,Fisher>();
             CreateMap<AddAdminModel,Administrator>();
             CreateMap<Fisher, FisherInfoForMatches>();
+            CreateMap<LikeModel,LikeReject>();
+            CreateMap<RejectModel, LikeReject>();
         }
     }
 }

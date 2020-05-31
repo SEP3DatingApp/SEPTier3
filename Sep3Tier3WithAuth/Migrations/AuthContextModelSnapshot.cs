@@ -19,6 +19,50 @@ namespace Sep3Tier3WithAuth.Migrations
                 .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            modelBuilder.Entity("Sep3Tier3WithAuth.Entities.Interactions", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("InteractionName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Interactions");
+                });
+
+            modelBuilder.Entity("Sep3Tier3WithAuth.Entities.LikeReject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("Fisher1Id")
+                        .IsRequired()
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Fisher2Id")
+                        .IsRequired()
+                        .HasColumnType("integer");
+
+                    b.Property<int>("InteractionsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Fisher1Id");
+
+                    b.HasIndex("Fisher2Id");
+
+                    b.HasIndex("InteractionsId");
+
+                    b.ToTable("LikeReject");
+                });
+
             modelBuilder.Entity("Sep3Tier3WithAuth.Entities.PersonSexuality", b =>
                 {
                     b.Property<int>("Id")
@@ -90,13 +134,10 @@ namespace Sep3Tier3WithAuth.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("PersonSexualityId")
+                    b.Property<int>("PersonSexualityId")
                         .HasColumnType("integer");
 
                     b.Property<string>("PicRef")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SexPref")
                         .HasColumnType("text");
 
                     b.Property<string>("Surname")
@@ -107,11 +148,34 @@ namespace Sep3Tier3WithAuth.Migrations
                     b.HasDiscriminator().HasValue("Fisher");
                 });
 
+            modelBuilder.Entity("Sep3Tier3WithAuth.Entities.LikeReject", b =>
+                {
+                    b.HasOne("Sep3Tier3WithAuth.Entities.Fisher", "Fisher1")
+                        .WithMany("Fishers1")
+                        .HasForeignKey("Fisher1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sep3Tier3WithAuth.Entities.Fisher", "Fisher2")
+                        .WithMany("Fishers2")
+                        .HasForeignKey("Fisher2Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sep3Tier3WithAuth.Entities.Interactions", null)
+                        .WithMany("LikeRejects")
+                        .HasForeignKey("InteractionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Sep3Tier3WithAuth.Entities.Fisher", b =>
                 {
                     b.HasOne("Sep3Tier3WithAuth.Entities.PersonSexuality", null)
                         .WithMany("Fishers")
-                        .HasForeignKey("PersonSexualityId");
+                        .HasForeignKey("PersonSexualityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sep3Tier3WithAuth.Entities
 {
@@ -14,5 +15,9 @@ namespace Sep3Tier3WithAuth.Entities
         public string Description { get; set; }
         public bool IsActive { get; set; } = true;
 
+        [InverseProperty("Fisher1")]
+        public ICollection<LikeReject> Fishers1 { get; set; }
+        [InverseProperty("Fisher2")]
+        public ICollection<LikeReject> Fishers2 { get; set; }
     }
 }

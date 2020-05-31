@@ -32,6 +32,43 @@ namespace Sep3Tier3WithAuth.Controllers
             _appSettings = appSettings.Value;
         }
 
+        //  ******************************GET METHODS****************************  \\
+        [Authorize(Roles = Roles.Admin)]
+        [HttpGet]
+        public IActionResult GetAllFishers()
+        {
+            var fishers = _userService.GetAll();
+            var model = _mapper.Map<IList<FisherModel>>(fishers);
+            return Ok(model);
+        }
+        [Authorize(Roles = Roles.Fisher)]
+        [HttpGet("GetFishersPref/{gender};{sexPref}")]
+        public IActionResult GetAllFishersAccordingToTheirPref(string gender, int sexPref)
+        {
+            var fishers = _userService.GetAllFishersAccordingToTheirPref(gender, sexPref);
+            var model = _mapper.Map<IList<FisherInfoForMatches>>(fishers);
+            return Ok(model);
+        }
+
+        [Authorize(Roles = Roles.Fisher)]
+        [HttpGet("GetUser/{id}")]
+        public IActionResult GetById(int id)
+        {
+            FisherModel model;
+            var fisher = _userService.GetById(id);
+            try
+            {
+                model = _mapper.Map<FisherModel>(fisher);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { message = "User does not exists in our database or it is not a fisher" });
+            }
+
+            return Ok(model);
+        }
+        //  ******************************GET METHODS ENDS****************************  \\
+        //  ******************************POST METHODS****************************  \\
         [AllowAnonymous]
         [HttpPost("Authenticate")]
         public IActionResult Authenticate([FromBody] AuthenticateModel model)
@@ -108,42 +145,47 @@ namespace Sep3Tier3WithAuth.Controllers
                 return BadRequest(new {message = ex.Message});
             }
         }
-
-        [Authorize(Roles = Roles.Admin)]
-        [HttpGet]
-        public IActionResult GetAllFishers()
-        {
-            var fishers = _userService.GetAll();
-            var model = _mapper.Map<IList<FisherModel>>(fishers);
-            return Ok(model);
-        }
         [Authorize(Roles = Roles.Fisher)]
-        [HttpGet("GetFishersPref/{gender};{sexPref}")]
-        public IActionResult GetAllFishersAccordingToTheirPref(string gender,int sexPref)
+        [HttpPost("Like")]
+        public IActionResult LikePerson([FromBody] LikeModel model)
         {
-            var fishers = _userService.GetAllFishersAccordingToTheirPref(gender,sexPref);
-            var model = _mapper.Map<IList<FisherInfoForMatches>>(fishers);
-            return Ok(model);
-        }
+            // Map model to entity
+            var likeReject = _mapper.Map<LikeReject>(model);
 
-        [Authorize(Roles = Roles.Fisher)]
-        [HttpGet("GetUser/{id}")]
-        public IActionResult GetById(int id)
-        {
-            FisherModel model;
-            var fisher = _userService.GetById(id);
             try
             {
-                model = _mapper.Map<FisherModel>(fisher);
+                //like someone
+                _userService.LikePerson(likeReject);
+                return Ok();
             }
-            catch (Exception)
+            catch (AppException ex)
             {
-                return BadRequest(new { message = "User does not exists in our database or it is not a fisher" });
+                // return error if something went wrong with the registration
+                return BadRequest(new { message = ex.Message });
             }
-
-            return Ok(model);
         }
 
+        [Authorize(Roles = Roles.Fisher)]
+        [HttpPost("Reject")]
+        public IActionResult RejectPerson([FromBody] RejectModel model)
+        {
+            // Map model to entity
+            var likeReject = _mapper.Map<LikeReject>(model);
+
+            try
+            {
+                //like someone
+                _userService.LikePerson(likeReject);
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                // return error if something went wrong with the registration
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        //  ******************************POST METHODS ENDS****************************  \\
         [Authorize(Roles = Roles.Fisher)]
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] UpdateModel model)

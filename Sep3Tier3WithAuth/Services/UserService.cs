@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Sep3Tier3WithAuth.Entities;
 using Sep3Tier3WithAuth.Helpers;
 
@@ -105,6 +106,26 @@ namespace Sep3Tier3WithAuth.Services
             _context.SaveChanges();
 
             return user;
+        }
+
+        public void LikePerson(LikeReject lr)
+        {
+            //Validation
+            if (lr.Fisher1Id <= 0 || lr.Fisher2Id <= 0)
+                throw new AppException("Some of the user id's are empty!");
+
+            _context.LikeReject.Add(lr);
+            _context.SaveChanges();
+        }
+
+        public void RejectPerson(LikeReject lr)
+        {
+            //Validation
+            if (lr.Fisher1Id <= 0 || lr.Fisher2Id <= 0)
+                throw new AppException("Some of the user id's are empty!");
+
+            _context.LikeReject.Add(lr);
+            _context.SaveChanges();
         }
 
         public Administrator CreateAdmin(Administrator admin, string password)
