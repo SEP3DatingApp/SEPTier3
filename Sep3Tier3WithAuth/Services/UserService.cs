@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sep3Tier3WithAuth.Controllers;
 using Sep3Tier3WithAuth.Entities;
 using Sep3Tier3WithAuth.Helpers;
 
@@ -47,7 +50,7 @@ namespace Sep3Tier3WithAuth.Services
         {
             IQueryable<Fisher> fishers = Enumerable.Empty<Fisher>().AsQueryable();
             //Mans not hot
-            if(gender.Equals("M") && sexPref == 1)
+            if (gender.Equals("M") && sexPref == 1)
             {
                 fishers = from fisher in _context.Fishers
                         .Where(b => (b.Gender == "F" && b.PersonSexualityId == 1) ||
@@ -108,8 +111,9 @@ namespace Sep3Tier3WithAuth.Services
             return user;
         }
 
-        public void LikePerson(LikeReject lr)
+        public void LikePerson(int userId,LikeReject lr)
         {
+            lr.Fisher1Id = userId;
             //Validation
             if (lr.Fisher1Id <= 0 || lr.Fisher2Id <= 0)
                 throw new AppException("Some of the user id's are empty!");
@@ -118,8 +122,9 @@ namespace Sep3Tier3WithAuth.Services
             _context.SaveChanges();
         }
 
-        public void RejectPerson(LikeReject lr)
+        public void RejectPerson(int userId, LikeReject lr)
         {
+            lr.Fisher1Id = userId;
             //Validation
             if (lr.Fisher1Id <= 0 || lr.Fisher2Id <= 0)
                 throw new AppException("Some of the user id's are empty!");

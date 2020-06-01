@@ -6,7 +6,7 @@ using Sep3Tier3WithAuth.Entities;
 
 namespace Sep3Tier3WithAuth.Helpers
 {
-    public class DbInitializer
+    public class DbSeeder
     {
         public static void Initializer(AuthContext context)
         {

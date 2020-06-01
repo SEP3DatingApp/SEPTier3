@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -47,6 +48,8 @@ namespace Sep3Tier3WithAuth.Controllers
         {
             var fishers = _userService.GetAllFishersAccordingToTheirPref(gender, sexPref);
             var model = _mapper.Map<IList<FisherInfoForMatches>>(fishers);
+            var userId = User.GetUserId();
+            Debug.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++" + userId);
             return Ok(model);
         }
 
@@ -151,11 +154,11 @@ namespace Sep3Tier3WithAuth.Controllers
         {
             // Map model to entity
             var likeReject = _mapper.Map<LikeReject>(model);
-
+            var userId = int.Parse(User.GetUserId());
             try
             {
                 //like someone
-                _userService.LikePerson(likeReject);
+                _userService.LikePerson(userId,likeReject);
                 return Ok();
             }
             catch (AppException ex)
@@ -171,11 +174,12 @@ namespace Sep3Tier3WithAuth.Controllers
         {
             // Map model to entity
             var likeReject = _mapper.Map<LikeReject>(model);
+            var userId = int.Parse(User.GetUserId());
 
             try
             {
                 //like someone
-                _userService.LikePerson(likeReject);
+                _userService.RejectPerson(userId,likeReject);
                 return Ok();
             }
             catch (AppException ex)

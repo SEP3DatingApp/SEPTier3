@@ -19,7 +19,7 @@ namespace Sep3Tier3WithAuth
                 try
                 {
                     var context = services.GetRequiredService<AuthContext>();
-                    DbInitializer.Initializer(context);
+                    DbSeeder.Initializer(context);
 
                 }
                 catch (Exception e)
