@@ -46,10 +46,9 @@ namespace Sep3Tier3WithAuth.Controllers
         [HttpGet("GetFishersPref/{gender};{sexPref}")]
         public IActionResult GetAllFishersAccordingToTheirPref(string gender, int sexPref)
         {
-            var fishers = _userService.GetAllFishersAccordingToTheirPref(gender, sexPref);
-            var model = _mapper.Map<IList<FisherInfoForMatches>>(fishers);
             var userId = User.GetUserId();
-            Debug.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++" + userId);
+            var fishers = _userService.GetAllFishersAccordingToTheirPref(userId,gender, sexPref);
+            var model = _mapper.Map<IList<FisherInfoForMatches>>(fishers);
             return Ok(model);
         }
 

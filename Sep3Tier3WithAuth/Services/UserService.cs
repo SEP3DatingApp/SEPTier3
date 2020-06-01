@@ -46,7 +46,7 @@ namespace Sep3Tier3WithAuth.Services
         {
             return _context.Fishers.Find(id);
         }
-        public IEnumerable<Fisher> GetAllFishersAccordingToTheirPref(string gender,int sexPref)
+        public IEnumerable<Fisher> GetAllFishersAccordingToTheirPref(int userId,string gender,int sexPref)
         {
             IQueryable<Fisher> fishers = Enumerable.Empty<Fisher>().AsQueryable();
             //Mans not hot
@@ -54,38 +54,38 @@ namespace Sep3Tier3WithAuth.Services
             {
                 fishers = from fisher in _context.Fishers
                         .Where(b => (b.Gender == "F" && b.PersonSexualityId == 1) ||
-                                    (b.Gender == "F" && b.PersonSexualityId == 3) && b.IsActive)
+                                    (b.Gender == "F" && b.PersonSexualityId == 3) && b.IsActive && b.Id != userId)
                     select fisher;
             }
             else if (gender.Equals("M") && sexPref == 2)
             {
                 fishers = from fisher in _context.Fishers
-                        .Where(b => (b.Gender == "M" && b.PersonSexualityId == 2) || (b.Gender == "M" && b.PersonSexualityId == 3) && b.IsActive)
+                        .Where(b => (b.Gender == "M" && b.PersonSexualityId == 2) || (b.Gender == "M" && b.PersonSexualityId == 3) && b.IsActive && b.Id != userId)
                     select fisher;
             }
             else if (gender.Equals("M") && sexPref == 3)
             {
                 fishers = from fisher in _context.Fishers
-                        .Where(b => b.Gender == "M" && b.PersonSexualityId == 2 || b.Gender == "M" && b.PersonSexualityId == 3 || b.Gender == "F" && b.PersonSexualityId == 1 || b.Gender == "F" && b.PersonSexualityId == 3 && b.IsActive)
+                        .Where(b => b.Gender == "M" && b.PersonSexualityId == 2 || b.Gender == "M" && b.PersonSexualityId == 3 || b.Gender == "F" && b.PersonSexualityId == 1 || b.Gender == "F" && b.PersonSexualityId == 3 && b.IsActive && b.Id != userId)
                     select fisher;
             }
             // Females
             else if (gender.Equals("F") && sexPref == 1)
             {
                 fishers = from fisher in _context.Fishers
-                        .Where(b => (b.Gender == "M" && b.PersonSexualityId == 1) || (b.Gender == "M" && b.PersonSexualityId == 3) && b.IsActive)
+                        .Where(b => (b.Gender == "M" && b.PersonSexualityId == 1) || (b.Gender == "M" && b.PersonSexualityId == 3) && b.IsActive && b.Id != userId)
                     select fisher;
             }
             else if (gender.Equals("F") && sexPref == 2)
             {
                 fishers = from fisher in _context.Fishers
-                        .Where(b => (b.Gender == "F" && b.PersonSexualityId == 2) || (b.Gender == "F" && b.PersonSexualityId == 3) && b.IsActive)
+                        .Where(b => (b.Gender == "F" && b.PersonSexualityId == 2) || (b.Gender == "F" && b.PersonSexualityId == 3) && b.IsActive && b.Id != userId)
                     select fisher;
             }
             else if (gender.Equals("F") && sexPref == 3)
             {
                 fishers = from fisher in _context.Fishers
-                        .Where(b => (b.Gender == "M" && b.PersonSexualityId == 1) || (b.Gender == "M" && b.PersonSexualityId == 3) || (b.Gender == "F" && b.PersonSexualityId == 2) || (b.Gender == "F" && b.PersonSexualityId == 3) && b.IsActive)
+                        .Where(b => (b.Gender == "M" && b.PersonSexualityId == 1) || (b.Gender == "M" && b.PersonSexualityId == 3) || (b.Gender == "F" && b.PersonSexualityId == 2) || (b.Gender == "F" && b.PersonSexualityId == 3) && b.IsActive && b.Id != userId)
                     select fisher; 
             }
             return fishers;
