@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using EntityFrameworkCore.Triggers;
-using Sep3Tier3WithAuth.Helpers;
 
 namespace Sep3Tier3WithAuth.Entities
 {
-    public class LikeReject
+    public class LikePersonList
     {
         [Key]
         public int Id { get; set; }
@@ -20,6 +16,6 @@ namespace Sep3Tier3WithAuth.Entities
         [Required]
         public int Fisher2Id { get; set; }
         public Fisher Fisher2 { get; set; }
-        public int InteractionsId { get; set; }
+        public int InteractionsId { get; set; } = 1;
     }
 }

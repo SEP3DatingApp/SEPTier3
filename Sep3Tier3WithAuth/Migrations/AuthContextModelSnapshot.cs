@@ -34,6 +34,33 @@ namespace Sep3Tier3WithAuth.Migrations
                     b.ToTable("Interactions");
                 });
 
+            modelBuilder.Entity("Sep3Tier3WithAuth.Entities.LikePersonList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("Fisher1Id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Fisher2Id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("InteractionsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Fisher1Id");
+
+                    b.HasIndex("Fisher2Id");
+
+                    b.HasIndex("InteractionsId");
+
+                    b.ToTable("PeopleWhoMatched");
+                });
+
             modelBuilder.Entity("Sep3Tier3WithAuth.Entities.LikeReject", b =>
                 {
                     b.Property<int>("Id")
@@ -41,12 +68,10 @@ namespace Sep3Tier3WithAuth.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("Fisher1Id")
-                        .IsRequired()
+                    b.Property<int>("Fisher1Id")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("Fisher2Id")
-                        .IsRequired()
+                    b.Property<int>("Fisher2Id")
                         .HasColumnType("integer");
 
                     b.Property<int>("InteractionsId")
@@ -146,6 +171,27 @@ namespace Sep3Tier3WithAuth.Migrations
                     b.HasIndex("PersonSexualityId");
 
                     b.HasDiscriminator().HasValue("Fisher");
+                });
+
+            modelBuilder.Entity("Sep3Tier3WithAuth.Entities.LikePersonList", b =>
+                {
+                    b.HasOne("Sep3Tier3WithAuth.Entities.Fisher", "Fisher1")
+                        .WithMany()
+                        .HasForeignKey("Fisher1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sep3Tier3WithAuth.Entities.Fisher", "Fisher2")
+                        .WithMany()
+                        .HasForeignKey("Fisher2Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sep3Tier3WithAuth.Entities.Interactions", null)
+                        .WithMany("LikePersonLists")
+                        .HasForeignKey("InteractionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Sep3Tier3WithAuth.Entities.LikeReject", b =>

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sep3Tier3WithAuth.Controllers;
 using Sep3Tier3WithAuth.Entities;
 using Sep3Tier3WithAuth.Helpers;
+using Sep3Tier3WithAuth.Models;
 
 namespace Sep3Tier3WithAuth.Services
 {
@@ -119,7 +120,7 @@ namespace Sep3Tier3WithAuth.Services
             //Validation
             if (lr.Fisher1Id <= 0 || lr.Fisher2Id <= 0)
                 throw new AppException("Some of the user id's are empty!");
-
+            CheckIfWeHaveAMatch(userId, lr.Fisher2Id);
             _context.LikeReject.Add(lr);
             _context.SaveChanges();
         }
@@ -247,6 +248,29 @@ namespace Sep3Tier3WithAuth.Services
             }
 
             return true;
+        }
+
+        public void CheckIfWeHaveAMatch(int myUserId, int personUserId)
+        {
+            var lr = from likeReject in _context.LikeReject
+                    .Where(b => (b.Fisher1Id == personUserId && b.Fisher2Id == myUserId) && b.InteractionsId == 1 )
+                select likeReject;
+
+            if (!lr.Any()) 
+                return;
+
+            _context.PeopleWhoMatched.Add(new LikePersonList
+            {
+                Fisher1Id = myUserId, Fisher2Id = personUserId
+            });
+        }
+
+        public IEnumerable<LikePersonList> GetHistory(int userid)
+        {
+            var lf = from pplWhoMatched in _context.PeopleWhoMatched
+                    .Where(b => b.Fisher1Id == userid || b.Fisher2Id == userid)
+                select pplWhoMatched;
+            return lf;
         }
     }
 }

@@ -12,5 +12,7 @@ namespace Sep3Tier3WithAuth.Entities
         public int Id { get; set; }
         public string InteractionName { get; set; }
         public ICollection<LikeReject> LikeRejects { get; set; }
+        public ICollection<LikePersonList> LikePersonLists { get; set; }
+
     }
 }

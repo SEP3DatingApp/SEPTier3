@@ -69,6 +69,13 @@ namespace Sep3Tier3WithAuth.Controllers
 
             return Ok(model);
         }
+
+        public IActionResult GetHistory()
+        {
+            var history = _userService.GetHistory(int.Parse(User.GetUserId()));
+            return Ok(history);
+        }
+
         //  ******************************GET METHODS ENDS****************************  \\
         //  ******************************POST METHODS****************************  \\
         [AllowAnonymous]
@@ -212,6 +219,11 @@ namespace Sep3Tier3WithAuth.Controllers
         public IActionResult Delete(int id)
         {
             _userService.Delete(id);
+            return Ok();
+        }
+
+        public IActionResult CheckIfWeHaveAMatch()
+        {
             return Ok();
         }
     }

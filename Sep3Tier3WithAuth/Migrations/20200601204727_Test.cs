@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Sep3Tier3WithAuth.Migrations
 {
-    public partial class test : Migration
+    public partial class Test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -98,6 +98,39 @@ namespace Sep3Tier3WithAuth.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PeopleWhoMatched",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Fisher1Id = table.Column<int>(nullable: false),
+                    Fisher2Id = table.Column<int>(nullable: false),
+                    InteractionsId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PeopleWhoMatched", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PeopleWhoMatched_Users_Fisher1Id",
+                        column: x => x.Fisher1Id,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PeopleWhoMatched_Users_Fisher2Id",
+                        column: x => x.Fisher2Id,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PeopleWhoMatched_Interactions_InteractionsId",
+                        column: x => x.InteractionsId,
+                        principalTable: "Interactions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_LikeReject_Fisher1Id",
                 table: "LikeReject",
@@ -114,6 +147,21 @@ namespace Sep3Tier3WithAuth.Migrations
                 column: "InteractionsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PeopleWhoMatched_Fisher1Id",
+                table: "PeopleWhoMatched",
+                column: "Fisher1Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PeopleWhoMatched_Fisher2Id",
+                table: "PeopleWhoMatched",
+                column: "Fisher2Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PeopleWhoMatched_InteractionsId",
+                table: "PeopleWhoMatched",
+                column: "InteractionsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_PersonSexualityId",
                 table: "Users",
                 column: "PersonSexualityId");
@@ -123,6 +171,9 @@ namespace Sep3Tier3WithAuth.Migrations
         {
             migrationBuilder.DropTable(
                 name: "LikeReject");
+
+            migrationBuilder.DropTable(
+                name: "PeopleWhoMatched");
 
             migrationBuilder.DropTable(
                 name: "Users");

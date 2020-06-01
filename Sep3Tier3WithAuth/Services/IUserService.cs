@@ -15,5 +15,6 @@ namespace Sep3Tier3WithAuth.Services
         Administrator CreateAdmin(Administrator admin, string password);
         void Update(Fisher user, string password = null);
         void Delete(int id);
+        IEnumerable<LikePersonList> GetHistory(int userid);
     }
 }

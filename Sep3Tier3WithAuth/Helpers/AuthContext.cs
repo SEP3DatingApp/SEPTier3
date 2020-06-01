@@ -1,4 +1,9 @@
-﻿using Sep3Tier3WithAuth.Entities;
+﻿using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using EntityFrameworkCore.Triggers;
+using Sep3Tier3WithAuth.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -30,5 +35,6 @@ namespace Sep3Tier3WithAuth.Helpers
 
         public DbSet<LikeReject> LikeReject { get; set; }
 
+        public DbSet<LikePersonList> PeopleWhoMatched { get; set; }
     }
 }
