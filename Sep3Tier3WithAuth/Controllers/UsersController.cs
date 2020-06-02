@@ -69,7 +69,7 @@ namespace Sep3Tier3WithAuth.Controllers
 
             return Ok(model);
         }
-
+        [HttpGet("History")]
         public IActionResult GetHistory()
         {
             var history = _userService.GetHistory(int.Parse(User.GetUserId()));
@@ -77,7 +77,7 @@ namespace Sep3Tier3WithAuth.Controllers
         }
 
         //  ******************************GET METHODS ENDS****************************  \\
-        //  ******************************POST METHODS****************************  \\
+        //  *****************************)*POST METHODS****************************  \\
         [AllowAnonymous]
         [HttpPost("Authenticate")]
         public IActionResult Authenticate([FromBody] AuthenticateModel model)
