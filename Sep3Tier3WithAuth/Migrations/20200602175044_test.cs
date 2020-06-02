@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Sep3Tier3WithAuth.Migrations
 {
-    public partial class Test : Migration
+    public partial class test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -106,7 +106,7 @@ namespace Sep3Tier3WithAuth.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Fisher1Id = table.Column<int>(nullable: false),
                     Fisher2Id = table.Column<int>(nullable: false),
-                    InteractionsId = table.Column<int>(nullable: false)
+                    InteractionsId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -128,7 +128,7 @@ namespace Sep3Tier3WithAuth.Migrations
                         column: x => x.InteractionsId,
                         principalTable: "Interactions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

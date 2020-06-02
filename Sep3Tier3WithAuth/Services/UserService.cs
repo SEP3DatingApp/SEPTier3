@@ -267,10 +267,11 @@ namespace Sep3Tier3WithAuth.Services
 
         public IEnumerable<LikePersonList> GetHistory(int userid)
         {
-            var lf = from pplWhoMatched in _context.PeopleWhoMatched
-                    .Where(b => b.Fisher1Id == userid || b.Fisher2Id == userid)
-                select pplWhoMatched;
-            return lf;
+            var lff = from pplWhoMatchedwith in _context.PeopleWhoMatched
+                    .Where((b => (b.Fisher1Id == userid || b.Fisher2Id != userid ) ||  b.Fisher1Id != userid || b.Fisher2Id == userid))
+                select pplWhoMatchedwith;
+
+            return lff;
         }
     }
 }

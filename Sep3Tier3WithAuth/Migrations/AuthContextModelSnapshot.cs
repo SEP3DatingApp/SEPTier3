@@ -47,7 +47,7 @@ namespace Sep3Tier3WithAuth.Migrations
                     b.Property<int>("Fisher2Id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("InteractionsId")
+                    b.Property<int?>("InteractionsId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -189,21 +189,19 @@ namespace Sep3Tier3WithAuth.Migrations
 
                     b.HasOne("Sep3Tier3WithAuth.Entities.Interactions", null)
                         .WithMany("LikePersonLists")
-                        .HasForeignKey("InteractionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InteractionsId");
                 });
 
             modelBuilder.Entity("Sep3Tier3WithAuth.Entities.LikeReject", b =>
                 {
                     b.HasOne("Sep3Tier3WithAuth.Entities.Fisher", "Fisher1")
-                        .WithMany("Fishers1")
+                        .WithMany()
                         .HasForeignKey("Fisher1Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Sep3Tier3WithAuth.Entities.Fisher", "Fisher2")
-                        .WithMany("Fishers2")
+                        .WithMany()
                         .HasForeignKey("Fisher2Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

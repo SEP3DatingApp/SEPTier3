@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Sep3Tier3WithAuth.Entities;
@@ -72,8 +73,10 @@ namespace Sep3Tier3WithAuth.Controllers
         [HttpGet("History")]
         public IActionResult GetHistory()
         {
-            var history = _userService.GetHistory(int.Parse(User.GetUserId()));
-            return Ok(history);
+            var myUserId = int.Parse(User.GetUserId());
+            var history = _userService.GetHistory(myUserId);
+            var model = _mapper.Map<IList<MatchHistoryModel>>(history);
+            return Ok(model);
         }
 
         //  ******************************GET METHODS ENDS****************************  \\

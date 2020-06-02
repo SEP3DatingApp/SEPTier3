@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace Sep3Tier3WithAuth
 {
@@ -27,7 +28,7 @@ namespace Sep3Tier3WithAuth
         {
             services.AddDbContext<AuthContext>();
             services.AddCors();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(option => { option.JsonSerializerOptions.PropertyNamingPolicy = null; option.JsonSerializerOptions.MaxDepth = 256; });
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>

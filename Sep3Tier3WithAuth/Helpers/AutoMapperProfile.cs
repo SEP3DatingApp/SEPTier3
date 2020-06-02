@@ -15,6 +15,7 @@ namespace Sep3Tier3WithAuth.Helpers
             CreateMap<Fisher, FisherInfoForMatches>();
             CreateMap<LikeModel,LikeReject>();
             CreateMap<RejectModel, LikeReject>();
+            CreateMap<LikePersonList,MatchHistoryModel>();
         }
     }
 }
